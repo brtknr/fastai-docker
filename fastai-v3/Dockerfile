@@ -1,9 +1,9 @@
-FROM nvidia/cuda:9.2-base-ubuntu16.04
+FROM nvidia/cuda:10.1-base-ubuntu18.04
 # See http://bugs.python.org/issue19846
 ENV LANG C.UTF-8
 LABEL com.nvidia.volumes.needed="nvidia_driver"
 
-RUN echo "deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64 /" > /etc/apt/sources.list.d/nvidia-ml.list
+RUN echo "deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/nvidia-ml.list
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
          build-essential \
@@ -47,5 +47,8 @@ RUN git clone https://github.com/fastai/course-v3.git
 
 COPY config.yml /root/.fastai/config.yml
 COPY run.sh /run.sh
+
+# Only applies to fastai release 1.0.52
+RUN pip install nbconvert==5.4.1
 
 CMD ["/run.sh"]
